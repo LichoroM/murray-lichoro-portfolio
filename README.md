@@ -67,6 +67,18 @@ Dev convenience: the app also navigates to #thank-you client‑side after a succ
 - Environment variables: same as above (VITE_WEB3FORMS_KEY, etc.)
 - No special routing config required since we use hash routes.
 
+### Custom domain on GitHub Pages
+1) Buy a domain from your registrar (e.g., Namecheap, Google Domains, Cloudflare Registrar).
+2) In your repo: Settings → Pages → Custom domain → enter your domain (e.g., www.murraylichoro.com) and save.
+3) DNS settings at your registrar:
+   - For a subdomain (www.murraylichoro.com): add a CNAME record pointing to lichorom.github.io.
+   - For the apex/root (yourdomain.com): add ALIAS/ANAME/Flattened CNAME to lichorom.github.io if your DNS supports it, otherwise add A records to GitHub Pages IPs (see GitHub docs) and a CNAME for www.
+4) Commit a CNAME file so it persists:
+   - public/CNAME with a single line: www.murraylichoro.com
+   - Our Actions workflow will publish it to dist, and GitHub Pages will pick it up.
+5) If you’re using a custom domain with no path (root at /), set a repository variable BASE_PATH to / in GitHub → Settings → Secrets and variables → Variables → New variable → BASE_PATH=/ (or skip this since we committed a CNAME and base is already '/').
+6) Wait for DNS to propagate (can take up to a few hours). Then turn on “Enforce HTTPS” in Pages if available.
+
 ### Thank‑You redirect notes
 - Local dev: set VITE_CONTACT_REDIRECT_URL to http://localhost:<port>/#thank-you
 - Production: set it to your deployed URL, e.g., https://your-domain.com/#thank-you

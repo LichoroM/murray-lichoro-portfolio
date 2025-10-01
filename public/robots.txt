@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Update this URL if your production domain is different
-Sitemap: https://lichorom.github.io/murray-lichoro-portfolio/sitemap.txt
+Sitemap: https://www.murraylichoro.com/sitemap.txt
