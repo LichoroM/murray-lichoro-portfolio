@@ -41,6 +41,7 @@ export async function submitContactForm(payload: ContactPayload): Promise<Contac
   // we rely on client-side navigation to a Thank You route to avoid non-JSON responses.
   // if (redirectUrl) formData.append('redirect', redirectUrl);
   // Optional captcha (enable in your Web3Forms dashboard as well)
+  // Only append captcha when explicitly enabled both here and in the Web3Forms dashboard
   if (enableCaptcha) formData.append('captcha', 'true');
 
   // Setup a timeout to avoid indefinite hanging

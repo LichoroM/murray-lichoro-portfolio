@@ -76,8 +76,8 @@ export function HeroSection() {
               <div className="absolute inset-0 bg-gradient-to-r from-[#14B8A6] to-[#8B5CF6] rounded-3xl blur-3xl opacity-20 animate-pulse"></div>
               <div className="relative bg-gradient-to-br from-card to-background p-4 sm:p-6 lg:p-8 rounded-3xl border border-border backdrop-blur-sm">
                 <ImageWithFallback
-                  src="/profile.webp"
-                  fallbackSrc="/profile.jpg"
+                  src={`${import.meta.env.BASE_URL}profile.webp`}
+                  fallbackSrc={`${import.meta.env.BASE_URL}profile.jpg`}
                   alt="Murray Lichoro - Professional Portrait"
                   className="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-2xl transition-transform duration-300 hover:scale-105"
                   loading="eager"

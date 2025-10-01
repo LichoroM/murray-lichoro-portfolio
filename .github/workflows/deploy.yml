@@ -48,7 +48,9 @@ jobs:
           fi
 
       - name: Build
-        run: npm run build
+        run: |
+          echo "Using BASE_PATH=$BASE_PATH"
+          npm run build
         env:
           VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
           VITE_CONTACT_SUBJECT_PREFIX: ${{ secrets.VITE_CONTACT_SUBJECT_PREFIX }}

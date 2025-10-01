@@ -162,7 +162,7 @@ export function ExperiencePage() {
 
   const handleDownloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/Murray-Lichoro-CV.pdf';
+    link.href = `${import.meta.env.BASE_URL}Murray-Lichoro-CV.pdf`;
     link.download = 'Murray-Lichoro-CV.pdf';
     document.body.appendChild(link);
     link.click();

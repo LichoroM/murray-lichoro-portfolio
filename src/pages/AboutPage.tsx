@@ -10,14 +10,14 @@ import {
 import { personalInfo } from '../data/personal';
 
 // NOTE: The project may not support `figma:` imports. Using a safe fallback image.
-const murrayPhoto = '/profile.jpg';
+const murrayPhoto = `${import.meta.env.BASE_URL}profile.jpg`;
 
 export function AboutPage() {
   const { navigateTo } = useRouter();
 
   const handleDownloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/Murray-Lichoro-CV.pdf';
+  link.href = `${import.meta.env.BASE_URL}Murray-Lichoro-CV.pdf`;
     link.download = 'Murray-Lichoro-CV.pdf';
     document.body.appendChild(link);
     link.click();

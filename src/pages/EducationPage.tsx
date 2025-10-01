@@ -297,7 +297,7 @@ export function EducationPage() {
 
   const handleViewTranscript = () => {
     const link = document.createElement('a');
-    link.href = '/Murray-Lichoro-CV.pdf';
+    link.href = `${import.meta.env.BASE_URL}Murray-Lichoro-CV.pdf`;
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
