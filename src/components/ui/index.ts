@@ -3,3 +3,4 @@ export { Card, CardHeader, CardTitle, CardContent } from './Card';
 export { Input, Textarea } from './Input';
 export { Badge } from './Badge';
 export { Progress } from './Progress';
+export { SkillProgress } from './SkillProgress';

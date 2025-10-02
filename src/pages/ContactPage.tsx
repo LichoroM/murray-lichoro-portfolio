@@ -6,9 +6,15 @@ import {
 import { Button, Card, CardContent, CardHeader, CardTitle, Input, Textarea, Badge } from '../components/ui';
 import { submitContactForm } from '../lib/contact';
 import { useRouter } from '../components/Router';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export function ContactPage() {
   const { navigateTo } = useRouter();
+  
+  // Animation refs
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: availabilityRef, isVisible: availabilityVisible } = useScrollAnimation();
+  
   // State
   const [formData, setFormData] = useState({
     name: '',
@@ -89,7 +95,12 @@ export function ContactPage() {
   return (
     <div className="min-h-screen pt-20">
       {/* HERO */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={heroRef}
+        className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
+          heroVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent rounded-full">
             <Mail className="w-4 h-4 text-[#14B8A6]" />
@@ -104,9 +115,14 @@ export function ContactPage() {
       </section>
 
       {/* AVAILABILITY BANNER */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#14B8A6]/10 to-[#8B5CF6]/10">
+      <section 
+        ref={availabilityRef}
+        className={`py-8 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#14B8A6]/10 to-[#8B5CF6]/10 transition-all duration-700 delay-200 ${
+          availabilityVisible ? 'animate-slide-in-left opacity-100' : 'opacity-0 -translate-x-8'
+        }`}
+      >
         <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-background p-6 rounded-xl border border-border">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-background p-6 rounded-xl ring-1 ring-white/10">
             {/* Left side - Status indicator */}
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
@@ -127,7 +143,7 @@ export function ContactPage() {
           <div className="lg:grid lg:grid-cols-3 gap-12">
             {/* Left: Contact Form */}
             <div className="lg:col-span-2">
-              <Card className="bg-background border border-border">
+              <Card className="bg-card/70">
                 <CardHeader>
                   <CardTitle className="text-foreground flex items-center gap-2">
                     <Send className="w-6 h-6 text-[#14B8A6]" />
@@ -235,7 +251,7 @@ export function ContactPage() {
             {/* Right: Sidebar */}
             <div className="space-y-8 mt-12 lg:mt-0">
               {/* Contact Information */}
-              <Card className="bg-background border border-border">
+              <Card className="bg-card/70">
                 <CardHeader>
                   <CardTitle className="text-foreground">Contact Information</CardTitle>
                 </CardHeader>
@@ -255,7 +271,7 @@ export function ContactPage() {
               </Card>
 
               {/* Availability */}
-              <Card className="bg-background border border-border">
+              <Card className="bg-card/70">
                 <CardHeader>
                   <CardTitle className="text-foreground">Availability</CardTitle>
                 </CardHeader>
@@ -315,7 +331,7 @@ export function ContactPage() {
           </div>
           <div className="sm:grid-cols-1 lg:grid-cols-1 gap-6 max-w-md mx-auto grid">
             {socialLinks.map((social, index) => (
-              <Card key={index} className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105 group">
+              <Card key={index} className="bg-card/70 transition-all duration-300 group">
                 <CardContent className="p-6 text-center">
                   <div className="inline-flex p-3 bg-accent rounded-lg mb-4 group-hover:bg-[#14B8A6]/20 transition-colors duration-300">
                     <social.icon className="w-6 h-6 text-[#14B8A6] group-hover:scale-110 transition-transform duration-300" />
@@ -348,7 +364,7 @@ export function ContactPage() {
           </div>
           <div className="sm:grid-cols-2 grid gap-6">
             {collaborationTypes.map((collab, index) => (
-              <Card key={index} className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300">
+              <Card key={index} className="bg-card/70 transition-all duration-300">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <div className="p-3 bg-accent rounded-lg">

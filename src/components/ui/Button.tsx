@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent-teal disabled:pointer-events-none disabled:opacity-50';
+  const baseClasses = 'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent-teal disabled:pointer-events-none disabled:opacity-50 interactive-button';
   
   const variantClasses = {
     default: 'bg-foreground text-background hover:bg-foreground/90',

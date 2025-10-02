@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/fetch-linkedin.mjs",
     "build": "tsc -b && vite build",
+    "fetch:linkedin": "node scripts/fetch-linkedin.mjs",
     "lint": "eslint .",
     "favicons": "node scripts/generate-favicon.mjs",
   "optimize:images": "node scripts/optimize-images.mjs",

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type RouteType = 'home' | 'about' | 'skills' | 'projects' | 'experience' | 'education' | 'contact' | 'thank-you';
+export type RouteType = 'home' | 'about' | 'skills' | 'projects' | 'experience' | 'education' | 'contact' | 'thank-you';
 
 interface RouterContextType {
   currentRoute: RouteType;
@@ -69,6 +69,12 @@ export const Router: React.FC<RouterProps> = ({ children }) => {
       document.title = `${meta.t} — ${titleBase}`;
       const desc = document.querySelector('meta[name="description"]');
       if (desc) desc.setAttribute('content', meta.d);
+      // Move focus to main content for accessibility on route change
+      const main = document.getElementById('main-content') as HTMLElement | null;
+      if (main) {
+        // Defer to after paint
+        setTimeout(() => main.focus(), 0);
+      }
     }
   }, [currentRoute]);
 

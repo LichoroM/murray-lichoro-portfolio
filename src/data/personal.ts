@@ -13,21 +13,38 @@ export interface PersonalInfo {
   responseTime: string;
   tagline: string;
   description: string;
+  // Optional identity details (user approved public sharing)
+  nationalId?: string;
+  passport?: string;
+  dob?: string; // DD/MM/YYYY
+  nationality?: string;
+  gender?: string;
+  maritalStatus?: string;
+  religion?: string;
+  driversLicense?: string;
 }
 
 export const personalInfo: PersonalInfo = {
   name: "Murray Lichoro",
   legalName: "Martin Muriithi Kinyua",
-  title: "Aspiring Cybersecurity & GRC Analyst | ISC2 CC Certified | Cisco Networking Academy Learner | Qualys Trainee | Former ICT Officer | BBA in AI (Nexford) | Open to Entry-Level Tech & Cyber Roles",
+  title: "IT Support Professional • Aspiring Cybersecurity & GRC Analyst",
   email: "Murraylichoro@gmail.com",
   phone: "+254 714 364 533",
   location: "Meru, Kenya",
   timezone: "EAT (UTC+3)",
   linkedin: "https://www.linkedin.com/in/martin-muriithi-2198b62ab/",
-  github: "https://github.com/murray-lichoro",
+  github: "https://github.com/LichoroM",
   twitter: "https://twitter.com/murray_lichoro",
   workingHours: "9 AM - 6 PM EAT",
   responseTime: "24-48 hours",
-  tagline: "Aspiring cybersecurity professional with ISC2 CC certification, Qualys training, and hands-on experience in vulnerability management and GRC frameworks. Currently pursuing BBA in AI while gaining international cybersecurity experience through remote internships.",
-  description: "I am Murray Lichoro, an aspiring cybersecurity and GRC analyst with a passion for protecting digital assets and ensuring organizational security compliance. With ISC2 CC certification and comprehensive Qualys training, I bring hands-on experience in vulnerability management, threat analysis, and security monitoring. Currently pursuing a Bachelor of Business Administration in Artificial Intelligence at Nexford University (3.94 GPA), I combine technical cybersecurity skills with business acumen. My professional journey includes international remote cybersecurity internship experience and 3+ years as an ICT Officer managing enterprise systems with 99% uptime. I am actively seeking entry-level opportunities in cybersecurity, GRC, or IT security roles where I can contribute to organizational security posture while continuing to grow in this dynamic field.",
+  tagline: "Aspiring Cybersecurity & GRC Analyst | ISC2 CC | Qualys Trainee | BBA in AI (Nexford)",
+  description: "I am an aspiring tech professional actively seeking entry-level opportunities in the IT and cybersecurity fields, with a growing focus on Governance, Risk, and Compliance (GRC). My experience as an ICT Officer at the National Potato Council of Kenya gave me hands-on exposure to technical support, troubleshooting, system maintenance, and website backend management. I hold the ISC2 Certified in Cybersecurity (CC) credential and am currently expanding my skills through Qualys Academy, focusing on vulnerability management, asset security, and compliance tools. I am also pursuing a Bachelor of Business Administration in Artificial Intelligence at Nexford University, strengthening my ability to bridge business strategy with technology.",
+  nationalId: "33757372",
+  passport: "AK0887041",
+  dob: "18/05/1996",
+  nationality: "Kenyan",
+  gender: "Male",
+  maritalStatus: "Single",
+  religion: "Christian",
+  driversLicense: "3516509",
 };

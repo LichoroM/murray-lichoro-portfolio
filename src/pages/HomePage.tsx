@@ -73,7 +73,7 @@ export function HomePage() {
             {quickLinks.map((link, index) => (
               <div
                 key={index}
-                className="group bg-background p-6 sm:p-8 rounded-xl border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
+                className="group bg-background p-6 sm:p-8 rounded-xl ring-1 ring-white/10 transition-all duration-300 hover:scale-105 hover:shadow-xl cursor-pointer"
                 onClick={() => navigateTo(link.route)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {

@@ -1,6 +1,7 @@
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import {
   Briefcase, Calendar, MapPin, Building, Award,
   CheckCircle, ExternalLink, Download,
@@ -8,6 +9,10 @@ import {
 } from 'lucide-react';
 
 export function ExperiencePage() {
+  // Animation refs
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: experienceRef, isVisible: experienceVisible } = useScrollAnimation();
+  
   // Data arrays
   const experiences = [
     {
@@ -172,7 +177,12 @@ export function ExperiencePage() {
   return (
     <div className="min-h-screen pt-20">
       {/* HERO */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={heroRef}
+        className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
+          heroVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent rounded-full">
             <Briefcase className="w-4 h-4 text-[#14B8A6]" />
@@ -187,7 +197,12 @@ export function ExperiencePage() {
       </section>
 
       {/* PROFESSIONAL SUMMARY */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-accent/30">
+      <section 
+        ref={experienceRef}
+        className={`py-16 px-4 sm:px-6 lg:px-8 bg-accent/30 transition-all duration-700 delay-300 ${
+          experienceVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-6xl mx-auto">
           <div className="lg:grid lg:grid-cols-3 gap-8">
             {/* Left: Summary */}
@@ -205,12 +220,12 @@ export function ExperiencePage() {
 
             {/* Right: Stats */}
             <div className="space-y-6 mt-8 lg:mt-0">
-              <div className="bg-background p-6 rounded-xl border border-border">
+              <div className="bg-card/70 p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">Quick Stats</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Experience</span>
-                    <span className="text-foreground">2+ Years</span>
+                    <span className="text-foreground">3+ Years</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Projects</span>
@@ -227,12 +242,12 @@ export function ExperiencePage() {
                 </div>
               </div>
 
-              <div className="bg-background p-6 rounded-xl border border-border">
+              <div className="bg-card/70 p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">Availability</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-muted-foreground">Open to opportunities</span>
+                    <span className="text-sm text-muted-foreground">Open to entry-level tech & cyber roles</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Globe className="w-4 h-4 text-muted-foreground" />
@@ -267,7 +282,7 @@ export function ExperiencePage() {
 
                     {/* Experience Card */}
                     <div className="flex-1">
-                      <Card className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300">
+                      <Card className="bg-card/70 transition-all duration-300">
                         <CardHeader>
                           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                             <div>
@@ -292,7 +307,7 @@ export function ExperiencePage() {
                                 </div>
                               </div>
                             </div>
-                            <Badge className="text-xs w-fit bg-transparent border border-border text-muted-foreground">{exp.type}</Badge>
+                            <Badge className="text-xs w-fit bg-transparent ring-1 ring-white/10 text-muted-foreground">{exp.type}</Badge>
                           </div>
                         </CardHeader>
 
@@ -358,7 +373,7 @@ export function ExperiencePage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {['Cybersecurity', 'IT Support', 'Web Technologies', 'Soft Skills'].map((category) => (
-              <div key={category} className="bg-background p-6 rounded-xl border border-border">
+              <div key={category} className="bg-card/70 p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">{category}</h3>
                 <div className="space-y-3">
                   {skills
@@ -390,7 +405,7 @@ export function ExperiencePage() {
           <h2 className="text-3xl text-foreground mb-8 text-center">Certifications</h2>
           <div className="max-w-3xl mx-auto space-y-4">
             {certifications.map((cert, index) => (
-              <div key={index} className="bg-background p-6 rounded-xl border border-border hover:border-[#14B8A6] transition-all duration-300">
+              <div key={index} className="bg-card/70 p-6 rounded-xl ring-1 ring-white/10 transition-all duration-300">
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-foreground">{cert.name}</h3>
                   <Badge

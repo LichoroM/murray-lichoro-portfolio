@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Sun, Moon, Menu, X, Sparkles } from 'lucide-react';
 import { useRouter } from './Router';
+import type { RouteType } from './Router';
+import { prefetchOnIdle, prefetchRoute } from '../lib/prefetch';
 import { useTheme } from './ThemeProvider';
 
 export const Navigation: React.FC = () => {
@@ -27,8 +29,16 @@ export const Navigation: React.FC = () => {
     setMobileMenuOpen(false);
   };
 
+  // Prefetch other routes after initial render (idle time)
+  React.useEffect(() => {
+    const others = menuItems.map(m => m.route as RouteType).filter(r => r !== currentRoute);
+    prefetchOnIdle(others);
+  }, [currentRoute]);
+
   return (
     <header className="fixed top-0 w-full glass-effect backdrop-blur-md border-b border-border/50 z-50 transition-all duration-300">
+      {/* Skip to content for keyboard users */}
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-accent text-foreground px-3 py-2 rounded">Skip to content</a>
       <div className="container mx-auto px-6">
         <div className="flex justify-between items-center py-4">
           {/* Modern Logo */}
@@ -45,6 +55,8 @@ export const Navigation: React.FC = () => {
             {menuItems.map(({ label, route }) => (
               <button
                 key={route}
+                onMouseEnter={() => prefetchRoute(route)}
+                onFocus={() => prefetchRoute(route)}
                 onClick={() => handleMenuItemClick(route)}
                 className={`relative px-4 py-2 rounded-lg font-medium transition-all duration-300 focus-visible:outline-2 focus-visible:outline-accent-teal group ${
                   currentRoute === route

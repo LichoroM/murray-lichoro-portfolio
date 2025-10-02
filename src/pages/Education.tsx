@@ -7,6 +7,7 @@ import {
   GraduationCap, Calendar, MapPin, Award, BookOpen,
   Trophy, Star, Clock, ExternalLink, Download, CheckCircle, Lightbulb
 } from 'lucide-react';
+// (Note) This page uses local static data; centralized cert fetching is handled in EducationPage.tsx
 
 // Strong types for education entries
 type BaseEducationEntry = {
@@ -33,121 +34,94 @@ type SecondaryEdEntry = BaseEducationEntry & {
   subjects: string[];
   coursework?: never;
   gpa?: never;
-  specialization?: never;
 };
-
+// (intentionally left blank)
+// Union type used for the education array
 type EducationEntry = HigherEdEntry | SecondaryEdEntry;
+  
+  export function EducationPage() {
+    const { navigateTo } = useRouter();
 
-export function EducationPage() {
-  const { navigateTo } = useRouter();
-
-  // Data arrays and objects
-  const education: EducationEntry[] = [
-    {
-      degree: 'Bachelor of Business Administration',
-      specialization: 'Artificial Intelligence Specialization',
-      institution: 'Nexford University',
-      location: 'Online (International)',
-      duration: 'January 2024 - Present',
-      gpa: 'In Progress',
-      status: 'In Progress',
-      description:
-        'Currently pursuing a BBA with specialization in Artificial Intelligence, focusing on the intersection of business strategy and AI technology. This program combines business fundamentals with cutting-edge AI applications.',
-      coursework: [
-        'AI Applications in Business',
-        'Data Analytics and Business Intelligence',
-        'Strategic Management and Technology',
-        'Business Ethics and AI Governance',
-        'Project Management',
-        'Financial Analysis and Planning',
-        'Organizational Behavior',
-        'Digital Transformation Strategies',
-      ],
-      achievements: [
-        'Maintaining strong academic performance',
-        'Active participation in international online discussions',
-        'Practical application of AI concepts in business scenarios',
-        'Developed business-technology integration skills',
-      ],
-      current: true,
-    },
-    {
-      degree: 'Diploma in Business Information Technology',
-      specialization: 'Business IT Systems',
-      institution: 'Jomo Kenyatta University of Agriculture and Technology (JKUAT)',
-      location: 'Nairobi, Kenya',
-      duration: 'August 2016 - November 2019',
-      status: 'Completed',
-      description:
-        'Comprehensive diploma program combining business principles with information technology, providing strong foundation in both business operations and technical systems management.',
-      coursework: [
-        'Systems Analysis and Design',
-        'Database Management Systems',
-        'Business Information Systems',
-        'Computer Networks and Security',
-        'Web Development and Design',
-        'Project Management',
-        'Business Communication',
-        'Accounting and Finance',
-      ],
-      achievements: [
-        'Successfully completed all core modules',
-        'Developed practical skills in system administration',
-        'Strong foundation in business-IT integration',
-        'Excellent performance in networking and security modules',
-      ],
-      current: false,
-    },
-    {
-      degree: 'Certificate in Information Technology',
-      institution: 'Kenya Methodist University',
-      location: 'Nairobi, Kenya',
-      duration: 'January 2016 - July 2016',
-      grade: 'Credit',
-      status: 'Completed',
-      description:
-        'Foundational certificate program in information technology covering basic computer skills, networking fundamentals, and IT support principles.',
-      subjects: [
-        'Computer Applications',
-        'Basic Networking',
-        'Hardware and Software Troubleshooting',
-        'IT Support Fundamentals',
-        'Operating Systems',
-        'Database Basics',
-      ],
-      achievements: [
-        'Strong performance in all modules',
-        'Gained practical IT support skills',
-        'Foundation for future IT career development',
-      ],
-      current: false,
-    },
-    {
-      degree: 'Kenya Certificate of Secondary Education (KCSE)',
-      institution: 'Archbishop Ndingi Boys School',
-      location: 'Kenya',
-      duration: 'January 2011 - November 2015',
-      grade: 'C+',
-      status: 'Completed',
-      description:
-        'Completed secondary education with good performance in mathematics, sciences, and languages that supported future technology studies.',
-      subjects: [
-        'Mathematics',
-        'Physics',
-        'Chemistry',
-        'English',
-        'Kiswahili',
-        'Geography',
-        'History',
-        'Christian Religious Education',
-      ],
-      achievements: [
-        'Good overall academic performance',
-        'Developed analytical and problem-solving skills',
-      ],
-      current: false,
-    },
-  ];
+    // Data arrays and objects
+    const education: EducationEntry[] = [
+      {
+        degree: 'Bachelor of Business Administration',
+        specialization: 'Artificial Intelligence Specialization',
+        institution: 'Nexford University',
+        location: 'Online (International)',
+        duration: 'January 2024 - Present',
+        gpa: 'In Progress',
+        status: 'In Progress',
+        description:
+          'Currently pursuing a BBA with specialization in Artificial Intelligence, focusing on the intersection of business strategy and AI technology. This program combines business fundamentals with cutting-edge AI applications.',
+        coursework: [
+          'AI Applications in Business',
+          'Data Analytics and Business Intelligence',
+          'Strategic Management and Technology',
+          'Business Ethics and AI Governance',
+          'Project Management',
+          'Financial Analysis and Planning',
+          'Organizational Behavior',
+          'Digital Transformation Strategies',
+        ],
+        achievements: [
+          'Maintaining strong academic performance',
+          'Active participation in international online discussions',
+          'Practical application of AI concepts in business scenarios',
+          'Developed business-technology integration skills',
+        ],
+        current: true,
+      },
+      {
+        degree: 'Certificate in Information Technology',
+        institution: 'Kenya Methodist University',
+        location: 'Nairobi, Kenya',
+        duration: 'January 2016 - July 2016',
+        grade: 'Credit',
+        status: 'Completed',
+        description:
+          'Foundational certificate program in information technology covering basic computer skills, networking fundamentals, and IT support principles.',
+        subjects: [
+          'Computer Applications',
+          'Basic Networking',
+          'Hardware and Software Troubleshooting',
+          'IT Support Fundamentals',
+          'Operating Systems',
+          'Database Basics',
+        ],
+        achievements: [
+          'Strong performance in all modules',
+          'Gained practical IT support skills',
+          'Foundation for future IT career development',
+        ],
+        current: false,
+      },
+      {
+        degree: 'Kenya Certificate of Secondary Education (KCSE)',
+        institution: 'Archbishop Ndingi Boys School',
+        location: 'Kenya',
+        duration: 'January 2011 - November 2015',
+        grade: 'C+',
+        status: 'Completed',
+        description:
+          'Completed secondary education with good performance in mathematics, sciences, and languages that supported future technology studies.',
+        subjects: [
+          'Mathematics',
+          'Physics',
+          'Chemistry',
+          'English',
+          'Kiswahili',
+          'Geography',
+          'History',
+          'Christian Religious Education',
+        ],
+        achievements: [
+          'Good overall academic performance',
+          'Developed analytical and problem-solving skills',
+        ],
+        current: false,
+      },
+    ];
 
   const academicProgress = {
     totalCredits: 120,
@@ -157,7 +131,20 @@ export function EducationPage() {
     gpa: '3.94',
   };
 
-  const courses = [
+  type Course = {
+    title: string;
+    platform: string;
+    duration: string;
+    completed: string;
+    credentialId?: string;
+    expires?: string;
+    description: string;
+    skills: string[];
+    certificate: boolean;
+    url?: string;
+  };
+
+  const courses: Course[] = [
     {
       title: 'CC Certified in Cybersecurity (CC)',
       platform: 'ISC2',
@@ -341,7 +328,7 @@ export function EducationPage() {
             {/* Right: Progress Cards */}
             <div className="space-y-6 mt-8 lg:mt-0">
               {/* Current Progress */}
-              <div className="bg-background p-6 rounded-xl border border-border">
+              <div className="bg-background p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">Current Progress</h3>
                 <div className="space-y-4">
                   <div>
@@ -369,7 +356,7 @@ export function EducationPage() {
               </div>
 
               {/* Academic Achievements */}
-              <div className="bg-background p-6 rounded-xl border border-border">
+              <div className="bg-background p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">Academic Achievements</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
@@ -401,7 +388,7 @@ export function EducationPage() {
 
           <div className="space-y-8">
             {education.map((edu, index) => (
-              <Card key={index} className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300">
+              <Card key={index} className="bg-card/70 transition-all duration-300">
                 <CardHeader>
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                     <div>
@@ -411,7 +398,7 @@ export function EducationPage() {
                           <Badge className="bg-green-500/20 text-green-400 border border-green-500/30">Current</Badge>
                         )}
                       </CardTitle>
-                      {edu.specialization && (
+                      {'specialization' in edu && edu.specialization && (
                         <p className="text-[#14B8A6] mt-1">{edu.specialization}</p>
                       )}
                       <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-2 text-sm text-muted-foreground">
@@ -430,7 +417,7 @@ export function EducationPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge className="mb-2 bg-transparent border border-border text-muted-foreground">{edu.status}</Badge>
+                      <Badge className="mb-2 bg-transparent ring-1 ring-white/10 text-muted-foreground">{edu.status}</Badge>
                       <div className="text-[#14B8A6]">{'gpa' in edu && edu.gpa ? edu.gpa : ('grade' in edu ? edu.grade : '')}</div>
                     </div>
                   </div>
@@ -481,9 +468,23 @@ export function EducationPage() {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {courses.map((course, index) => (
-              <Card key={index} className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105">
+              <Card key={index} className="relative bg-card/70 transition-all duration-300 group">
+                {/* Verify Button - Top Right */}
+                {course.url && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="absolute top-4 right-4 z-10 h-8 px-3 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[#14B8A6] hover:text-white hover:border-[#14B8A6] hover:scale-105"
+                    aria-label={`Verify ${course.title}`}
+                    onClick={() => window.open(course.url!, '_blank', 'noopener,noreferrer')}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                    Verify
+                  </Button>
+                )}
+
                 <CardHeader>
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between pr-16">
                     <div className="flex-1">
                       <CardTitle className="text-foreground">{course.title}</CardTitle>
                       <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
@@ -497,12 +498,14 @@ export function EducationPage() {
                         </div>
                       </div>
                     </div>
-                    {course.certificate && (
-                      <Badge className="bg-[#14B8A6]/20 text-[#14B8A6]">
-                        <Award className="w-3 h-3 mr-1" />
-                        Certified
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {course.certificate && (
+                        <Badge className="bg-[#14B8A6]/20 text-[#14B8A6]">
+                          <Award className="w-3 h-3 mr-1" />
+                          Certified
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 </CardHeader>
 
@@ -516,12 +519,21 @@ export function EducationPage() {
                     ))}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-border space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Completed: {course.completed}</span>
-                      <Button variant="ghost" size="sm" className="h-6 px-2" aria-label="Open credential">
-                        <ExternalLink className="w-3 h-3" />
-                      </Button>
+                  <div className="mt-4 pt-4 border-t border-border/40 space-y-2">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
+                      <span className="text-muted-foreground">Completed: {course.completed}</span>
+                      {course.url && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-7 hover:bg-[#14B8A6] hover:text-white hover:border-[#14B8A6] hover:scale-105 transition-all duration-300"
+                          aria-label="Open credential"
+                          onClick={() => window.open(course.url!, '_blank', 'noopener,noreferrer')}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                          Open credential
+                        </Button>
+                      )}
                     </div>
                     {course.credentialId && (
                       <div className="text-xs text-muted-foreground">
@@ -551,7 +563,7 @@ export function EducationPage() {
 
           <div className="grid lg:grid-cols-1 gap-6">
             {academicProjects.map((project, index) => (
-              <Card key={index} className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300">
+              <Card key={index} className="bg-card/70 transition-all duration-300">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>

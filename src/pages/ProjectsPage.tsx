@@ -4,6 +4,7 @@ import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { useRouter } from '../components/Router';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import { projects as dataProjects } from '../data';
 import {
   ExternalLink, Github, FolderOpen, Calendar, Users, Clock, Eye,
@@ -12,12 +13,17 @@ import {
 
 export function ProjectsPage() {
   const { navigateTo } = useRouter();
+  
+  // Animation refs
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  
   // State
   const [filter, setFilter] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
 
   // Source data from central data index
   const projects = dataProjects;
+  const active = projects.filter(p => p.status === 'In Progress');
 
   // Fallback image per category
   const getProjectImage = (category: string) => {
@@ -77,8 +83,25 @@ export function ProjectsPage() {
 
   return (
     <div className="min-h-screen pt-20">
+      {/* ACTIVE PROJECTS BANNER */}
+      {active.length > 0 && (
+        <section className="px-4 sm:px-6 lg:px-8 pt-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="bg-accent/40 rounded-xl p-4 sm:p-6 ring-1 ring-white/10">
+              <p className="text-sm text-muted-foreground text-center">
+                Currently working on: {active.map(a => a.title).join(' • ')}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
       {/* HERO */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={heroRef}
+        className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
+          heroVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent rounded-full">
             <FolderOpen className="w-4 h-4 text-[#14B8A6]" />
@@ -151,7 +174,7 @@ export function ProjectsPage() {
               {featuredProjects.map((project, idx) => {
                 const CategoryIcon = getCategoryIcon(project.category);
                 return (
-                  <Card key={idx} className="overflow-hidden bg-card border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group">
+                  <Card key={idx} className="overflow-hidden bg-card/70 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl group">
                     <div className="grid lg:grid-cols-2 gap-0">
                       {/* Image */}
                       <div className="relative overflow-hidden">
@@ -263,7 +286,7 @@ export function ProjectsPage() {
               {otherProjects.map((project, idx) => {
                 const CategoryIcon = getCategoryIcon(project.category);
                 return (
-                  <Card key={idx} className="overflow-hidden bg-card border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105 hover:shadow-lg group">
+                  <Card key={idx} className="overflow-hidden bg-card/70 transition-all duration-300 hover:scale-105 hover:shadow-lg group">
                     {/* Image */}
                     <div className="relative">
                       <ImageWithFallback

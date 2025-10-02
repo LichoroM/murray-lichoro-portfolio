@@ -105,7 +105,7 @@ export const DataTestComponent: React.FC = () => {
           </div>
 
           {/* Detailed Personal Info */}
-          <div className="mt-12 p-6 bg-card rounded-lg border border-border">
+          <div className="mt-12 p-6 bg-card rounded-lg ring-1 ring-white/10">
             <h2 className="text-2xl font-bold text-foreground mb-4">Personal Information Sample</h2>
             <div className="grid md:grid-cols-2 gap-4 text-sm">
               <div>
@@ -131,7 +131,7 @@ export const DataTestComponent: React.FC = () => {
 
           {/* Sample Experience */}
           {experiences.length > 0 && (
-            <div className="mt-8 p-6 bg-card rounded-lg border border-border">
+            <div className="mt-8 p-6 bg-card rounded-lg ring-1 ring-white/10">
               <h2 className="text-2xl font-bold text-foreground mb-4">Latest Experience Sample</h2>
               <div className="text-sm space-y-2">
                 <div><strong>Company:</strong> {experiences[0].company}</div>
@@ -146,7 +146,7 @@ export const DataTestComponent: React.FC = () => {
 
           {/* Sample Project */}
           {featuredProjects.length > 0 && (
-            <div className="mt-8 p-6 bg-card rounded-lg border border-border">
+            <div className="mt-8 p-6 bg-card rounded-lg ring-1 ring-white/10">
               <h2 className="text-2xl font-bold text-foreground mb-4">Featured Project Sample</h2>
               <div className="text-sm space-y-2">
                 <div><strong>Title:</strong> {featuredProjects[0].title}</div>

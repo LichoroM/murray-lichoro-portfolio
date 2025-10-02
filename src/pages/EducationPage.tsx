@@ -3,6 +3,7 @@ import { Button } from '../components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Progress } from '../components/ui/Progress';
 import { useRouter } from '../components/Router';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import {
   GraduationCap,
   Calendar,
@@ -17,6 +18,10 @@ import {
   CheckCircle,
   Lightbulb,
 } from 'lucide-react';
+import { certifications as centralizedCerts } from '../data/education';
+import { useEffect, useMemo, useState } from 'react';
+import { fetchLinkedInProfile } from '../lib/linkedin';
+import type { LinkedInCert } from '../lib/linkedin';
 
 // Strong types for education entries
 interface BaseEducationEntry {
@@ -50,6 +55,18 @@ type EducationEntry = HigherEdEntry | SecondaryEdEntry;
 
 export function EducationPage() {
   const { navigateTo } = useRouter();
+  
+  // Animation refs
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: educationRef, isVisible: educationVisible } = useScrollAnimation();
+  
+  const [liCerts, setLiCerts] = useState<LinkedInCert[] | null>(null);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetchLinkedInProfile(ctrl.signal).then((p) => setLiCerts(p?.certifications ?? null));
+    return () => ctrl.abort();
+  }, []);
 
   // Data arrays and objects
   const education: EducationEntry[] = [
@@ -168,115 +185,42 @@ export function EducationPage() {
     gpa: '3.94',
   };
 
-  const courses = [
-    {
-      title: 'CC Certified in Cybersecurity (CC)',
-      platform: 'ISC2',
-      duration: '3 months',
-      completed: 'April 2025',
-      credentialId: '24f940cc-0947-4f38-ac94-64de6020947d',
-      expires: 'April 2028',
-      description:
-        'Industry-recognized cybersecurity certification covering security principles, network security, incident response, and access controls.',
-      skills: ['Access Control Management', 'Security Principles'],
-      certificate: true,
-    },
-    {
-      title: 'Vulnerability Management (VM) - Foundation',
-      platform: 'Qualys',
+  // Normalize centralized certifications into the shape used by this page
+  const courses = useMemo(() => {
+    const base = centralizedCerts.map((c) => ({
+    title: c.name,
+    platform: c.issuer,
+    duration: c.duration ?? 'Self-paced',
+    completed: c.completed,
+    credentialId: c.credentialId,
+    expires: c.expires,
+    description:
+      c.description ?? 'Professional course or certification completed as part of continuous learning.',
+    skills: c.skills,
+    url: c.url,
+    certificate: true,
+    }));
+
+    // Merge LinkedIn certs if available; avoid naive duplicates by name+issuer+completed
+    const extras = (liCerts ?? []).map((c) => ({
+      title: c.name ?? 'Certification',
+      platform: c.issuer ?? 'LinkedIn',
       duration: 'Self-paced',
-      completed: 'July 2025',
-      credentialId: 'QA-COURSE-SP-FDN-VM',
-      description:
-        'Foundation course covering vulnerability management, security compliance awareness, and network risk identification.',
-      skills: [
-        'Vulnerability Management',
-        'Security Compliance Awareness',
-        'Network Risk Identification',
-        'Cybersecurity Fundamentals',
-      ],
+      completed: c.issued ?? '—',
+      credentialId: c.credential_id ?? undefined,
+      expires: c.expires ?? undefined,
+      description: 'Imported from LinkedIn profile.',
+      skills: [] as string[],
+      url: c.url ?? undefined,
       certificate: true,
-    },
-    {
-      title: 'Qualys Sensors Foundation',
-      platform: 'Qualys',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      credentialId: 'QA-COURSE-SP-FDN-QSF',
-      description:
-        'Foundation course on Qualys Sensors and Scanners. Comprehensive overview of the various types of sensors and scanners available.',
-      skills: ['Vulnerability Scanning and Sensor Deployment', 'Security Scanning Tools'],
-      certificate: true,
-    },
-    {
-      title: 'Qualys Enterprise TruRisk™ Platform',
-      platform: 'Qualys',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      credentialId: 'QA-COURSE-SP-FDN-ETP',
-      description:
-        'Course designed to get started with the Qualys Enterprise TruRisk™ Platform. Provides foundational understanding of how the platform helps organizations measure, communicate, and eliminate cyber risk.',
-      skills: [
-        'Security Tools & Platforms (Qualys)',
-        'Cyber Risk Management',
-        'Risk-Based Security',
-        'Cybersecurity Fundamentals',
-      ],
-      certificate: true,
-    },
-    {
-      title: 'Introduction to Cybersecurity',
-      platform: 'Cisco Networking Academy',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      credentialId: 'dab7bb63-665d-410e-94d7-e9d973ecbe35',
-      description:
-        'Comprehensive introduction to cybersecurity fundamentals, network vulnerabilities, and cyber best practices.',
-      skills: ['Network Vulnerabilities', 'Threat Detection', 'Cyber Best Practices', 'Privacy and Data Confidentiality'],
-      certificate: true,
-    },
-    {
-      title: 'Introduction to CIP',
-      platform: 'OPSWAT Academy',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      credentialId: 'PfOHUMFrwA',
-      expires: 'June 2026',
-      description: 'Certification on Introduction to Critical Infrastructure Protection (CIP).',
-      skills: ['Critical Infrastructure Protection', 'Cybersecurity Fundamentals'],
-      certificate: true,
-    },
-    {
-      title: 'Prompt Engineering: How to Talk to the AIs',
-      platform: 'LinkedIn Learning',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      description:
-        'Advanced course on prompt engineering techniques for effective AI communication and optimization.',
-      skills: ['Prompt Engineering', 'Large Language Models (LLM)', 'Generative AI'],
-      certificate: true,
-    },
-    {
-      title: 'Introduction to Prompt Engineering for Generative AI',
-      platform: 'LinkedIn Learning',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      description:
-        'Foundational course on prompt engineering principles for generative artificial intelligence systems.',
-      skills: ['AI Prompting'],
-      certificate: true,
-    },
-    {
-      title: 'Amplify Your Critical Thinking with Generative AI',
-      platform: 'LinkedIn Learning',
-      duration: 'Self-paced',
-      completed: 'July 2025',
-      description:
-        'Course focused on enhancing critical thinking skills through the strategic use of generative AI tools.',
-      skills: ['Critical Thinking', 'Artificial Intelligence for Business'],
-      certificate: true,
-    },
-  ];
+    }));
+
+    const key = (x: any) => `${x.title}::${x.platform}::${x.completed}`.toLowerCase();
+    const map = new Map<string, any>();
+    for (const c of base) map.set(key(c), c);
+    for (const c of extras) if (!map.has(key(c))) map.set(key(c), c);
+    return Array.from(map.values());
+  }, [centralizedCerts, liCerts]);
 
   const academicProjects = [
     {
@@ -307,7 +251,12 @@ export function EducationPage() {
   return (
     <div className="min-h-screen pt-20">
       {/* HERO */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={heroRef}
+        className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
+          heroVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent rounded-full">
             <GraduationCap className="w-4 h-4 text-[#14B8A6]" />
@@ -358,7 +307,7 @@ export function EducationPage() {
             {/* Right: Progress Cards */}
             <div className="space-y-6 mt-8 lg:mt-0">
               {/* Current Progress */}
-              <div className="bg-background p-6 rounded-xl border border-border">
+              <div className="bg-background p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">Current Progress</h3>
                 <div className="space-y-4">
                   <div>
@@ -389,7 +338,7 @@ export function EducationPage() {
               </div>
 
               {/* Academic Achievements */}
-              <div className="bg-background p-6 rounded-xl border border-border">
+              <div className="bg-background p-6 rounded-xl ring-1 ring-white/10">
                 <h3 className="text-foreground mb-4">Academic Achievements</h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
@@ -412,7 +361,12 @@ export function EducationPage() {
       </section>
 
       {/* FORMAL EDUCATION */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={educationRef}
+        className={`py-16 px-4 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${
+          educationVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl text-foreground mb-4 sm:text-4xl">Formal Education</h2>
@@ -425,7 +379,7 @@ export function EducationPage() {
             {education.map((edu, index) => (
               <Card
                 key={index}
-                className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300"
+                className="bg-card/70 transition-all duration-300"
               >
                 <CardHeader>
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
@@ -457,7 +411,7 @@ export function EducationPage() {
                       </div>
                     </div>
                     <div className="text-right">
-                      <Badge className="mb-2 bg-transparent border border-border text-muted-foreground">
+                      <Badge className="mb-2 bg-transparent ring-1 ring-white/10 text-muted-foreground">
                         {edu.status}
                       </Badge>
                       <div className="text-[#14B8A6]">{edu.gpa || edu.grade || ''}</div>
@@ -527,10 +481,24 @@ export function EducationPage() {
             {courses.map((course, index) => (
               <Card
                 key={index}
-                className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105"
+                className="relative bg-card/70 transition-all duration-300 group"
               >
+                {/* Verify Button - Top Right */}
+                {course.url && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="absolute top-4 right-4 z-10 h-8 px-3 opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-[#14B8A6] hover:text-white hover:border-[#14B8A6] hover:scale-105"
+                    aria-label={`Verify ${course.title}`}
+                    onClick={() => window.open(course.url!, '_blank', 'noopener,noreferrer')}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                    Verify
+                  </Button>
+                )}
+
                 <CardHeader>
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-start justify-between pr-16">
                     <div className="flex-1">
                       <CardTitle className="text-foreground">{course.title}</CardTitle>
                       <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
@@ -544,12 +512,14 @@ export function EducationPage() {
                         </div>
                       </div>
                     </div>
-                    {course.certificate && (
-                      <Badge className="bg-[#14B8A6]/20 text-[#14B8A6]">
-                        <Award className="w-3 h-3 mr-1" />
-                        Certified
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {course.certificate && (
+                        <Badge className="bg-[#14B8A6]/20 text-[#14B8A6]">
+                          <Award className="w-3 h-3 mr-1" />
+                          Certified
+                        </Badge>
+                      )}
+                    </div>
                   </div>
                 </CardHeader>
 
@@ -569,17 +539,21 @@ export function EducationPage() {
                     ))}
                   </div>
 
-                  <div className="mt-4 pt-4 border-t border-border space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Completed: {course.completed}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 px-2"
-                        aria-label="Open credential"
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                      </Button>
+                  <div className="mt-4 pt-4 border-t border-border/40 space-y-2">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
+                      <span className="text-muted-foreground">Completed: {course.completed}</span>
+                      {course.url && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-7 hover:bg-[#14B8A6] hover:text-white hover:border-[#14B8A6] hover:scale-105 transition-all duration-300"
+                          aria-label="Open credential"
+                          onClick={() => window.open(course.url!, '_blank', 'noopener,noreferrer')}
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+                          Open credential
+                        </Button>
+                      )}
                     </div>
                     {'credentialId' in course && course.credentialId && (
                       <div className="text-xs text-muted-foreground">
@@ -611,10 +585,7 @@ export function EducationPage() {
 
           <div className="grid lg:grid-cols-1 gap-6">
             {academicProjects.map((project, index) => (
-              <Card
-                key={index}
-                className="bg-background border border-border hover:border-[#14B8A6] transition-all duration-300"
-              >
+              <Card key={index} className="bg-card/70 transition-all duration-300">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>

@@ -9,7 +9,7 @@ export function ThankYouPage() {
     <div className="min-h-screen pt-20">
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-xl mx-auto">
-          <Card className="bg-background border border-border text-center">
+          <Card className="bg-background ring-1 ring-white/10 text-center">
             <CardHeader>
               <div className="flex justify-center mb-2">
                 <CheckCircle2 className="w-12 h-12 text-[#14B8A6]" />

@@ -2,6 +2,7 @@ import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { useRouter } from '../components/Router';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import {
   Shield, Code, Download, Award, MapPin,
   Target, Lightbulb, Users, Globe, GraduationCap,
@@ -14,6 +15,10 @@ const murrayPhoto = `${import.meta.env.BASE_URL}profile.jpg`;
 
 export function AboutPage() {
   const { navigateTo } = useRouter();
+  
+  // Animation refs
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: storyRef, isVisible: storyVisible } = useScrollAnimation();
 
   const handleDownloadCV = () => {
     const link = document.createElement('a');
@@ -85,19 +90,35 @@ export function AboutPage() {
   return (
     <div className="min-h-screen pt-20">
       {/* HERO */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={heroRef}
+        className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
+          heroVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent rounded-full">
               <Award className="w-4 h-4 text-[#14B8A6]" />
               <span>About Murray Lichoro</span>
             </div>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/15 text-green-500 border border-green-500/30 text-sm">
+                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                Open to work
+              </span>
+            </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl text-foreground">
               About Murray Lichoro
             </h1>
             <div className="w-24 h-1 bg-gradient-to-r from-[#14B8A6] to-[#8B5CF6] mx-auto rounded-full mt-4"></div>
-            <p className="text-muted-foreground max-w-3xl mx-auto mt-6">
-              A security-minded technologist transitioning from enterprise IT support to cybersecurity and GRC, blending hands-on systems experience with modern frontend development.
+            {personalInfo.tagline && (
+              <p className="text-muted-foreground max-w-3xl mx-auto mt-6">
+                {personalInfo.tagline}
+              </p>
+            )}
+            <p className="text-muted-foreground max-w-3xl mx-auto mt-4">
+              {personalInfo.description}
             </p>
           </div>
 
@@ -105,7 +126,7 @@ export function AboutPage() {
             {/* LEFT: Profile Image */}
             <div className="relative order-2 lg:order-1 max-w-lg mx-auto w-full">
               <div className="absolute inset-0 bg-gradient-to-r from-[#14B8A6] to-[#8B5CF6] rounded-3xl blur-3xl opacity-20 animate-pulse" aria-hidden="true"></div>
-              <div className="relative bg-gradient-to-br from-card to-background p-4 sm:p-6 lg:p-8 rounded-3xl border border-border backdrop-blur-sm">
+              <div className="relative bg-gradient-to-br from-card to-background p-4 sm:p-6 lg:p-8 rounded-3xl ring-1 ring-white/10 backdrop-blur-sm">
                 <ImageWithFallback
                   src={murrayPhoto}
                   alt="Murray Lichoro - Professional Portrait"
@@ -131,7 +152,7 @@ export function AboutPage() {
 
               {/* Key Info Cards */}
               <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto lg:mx-0">
-                <div className="bg-accent p-4 rounded-xl border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105">
+                <div className="bg-accent p-4 rounded-xl ring-1 ring-white/10 transition-all duration-300 hover:scale-105">
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-[#14B8A6]" />
                     <div>
@@ -140,7 +161,7 @@ export function AboutPage() {
                     </div>
                   </div>
                 </div>
-                <div className="bg-accent p-4 rounded-xl border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105">
+                <div className="bg-accent p-4 rounded-xl ring-1 ring-white/10 transition-all duration-300 hover:scale-105">
                   <div className="flex items-center gap-3">
                     <Globe className="w-5 h-5 text-[#8B5CF6]" />
                     <div>
@@ -156,7 +177,7 @@ export function AboutPage() {
                 {personalStats.map((s, i) => {
                   const Icon = s.icon;
                   return (
-                    <div key={i} className="bg-background p-4 rounded-xl text-center border border-border hover:border-[#14B8A6] transition-all hover:scale-105">
+                    <div key={i} className="bg-background p-4 rounded-xl text-center ring-1 ring-white/10 transition-all hover:scale-105">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Icon className="w-5 h-5 text-[#14B8A6]" />
                         <div className="text-foreground">{s.label}</div>
@@ -187,13 +208,13 @@ export function AboutPage() {
 
               {/* Contact Info Pills */}
               <div className="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto lg:mx-0">
-                <div className="bg-background p-4 rounded-xl border border-border hover:bg-[#14B8A6]/20 hover:border-[#14B8A6] transition-all">
+                <div className="bg-background p-4 rounded-xl ring-1 ring-white/10 hover:bg-[#14B8A6]/10 transition-all">
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-[#14B8A6]" />
                     <span className="text-muted-foreground">{personalInfo.email}</span>
                   </div>
                 </div>
-                <div className="bg-background p-4 rounded-xl border border-border hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6] transition-all">
+                <div className="bg-background p-4 rounded-xl ring-1 ring-white/10 hover:bg-[#8B5CF6]/10 transition-all">
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-[#8B5CF6]" />
                     <span className="text-muted-foreground">{personalInfo.phone}</span>
@@ -206,7 +227,12 @@ export function AboutPage() {
       </section>
 
       {/* QUICK NAVIGATION */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-accent/30">
+      <section 
+        ref={storyRef}
+        className={`py-12 px-4 sm:px-6 lg:px-8 bg-accent/30 transition-all duration-700 delay-500 ${
+          storyVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h3 className="text-2xl sm:text-3xl text-foreground">Explore My Professional Profile</h3>
@@ -260,7 +286,7 @@ export function AboutPage() {
             {coreValues.map((v, i) => {
               const Icon = v.icon;
               return (
-                <div key={i} className="bg-background p-6 rounded-xl border border-border hover:border-[#14B8A6] transition-all duration-300 hover:scale-105 group flex flex-col items-center text-center space-y-4">
+                <div key={i} className="bg-background p-6 rounded-xl ring-1 ring-white/10 transition-all duration-300 hover:scale-105 group flex flex-col items-center text-center space-y-4">
                   <div className="p-3 bg-accent rounded-lg group-hover:bg-[#14B8A6]/20 transition-colors duration-300">
                     <Icon className="w-6 h-6 text-[#14B8A6]" />
                   </div>
@@ -289,7 +315,7 @@ export function AboutPage() {
                   <div className="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-[#14B8A6] to-[#8B5CF6] text-white font-bold text-sm">
                     {idx + 1}
                   </div>
-                  <div className="flex-1 bg-background p-6 rounded-xl border border-border hover:border-[#14B8A6] transition-colors duration-300">
+                  <div className="flex-1 bg-background p-6 rounded-xl ring-1 ring-white/10 transition-colors duration-300">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-3">
                       <Badge className="w-fit bg-[#14B8A6]/20 text-[#14B8A6] border border-[#14B8A6]/30">{item.year}</Badge>
                       <h4 className="text-foreground font-bold">{item.title}</h4>
@@ -313,7 +339,7 @@ export function AboutPage() {
 
           <div className="flex flex-wrap gap-3 justify-center">
             {interests.map((interest, i) => (
-              <Badge key={i} variant="secondary" className="bg-background text-muted-foreground border border-border px-4 py-2 hover:border-[#14B8A6] hover:bg-[#14B8A6]/10 transition-all duration-300">
+              <Badge key={i} variant="secondary" className="bg-background text-muted-foreground ring-1 ring-white/10 px-4 py-2 hover:bg-[#14B8A6]/10 transition-all duration-300">
                 {interest}
               </Badge>
             ))}
@@ -330,7 +356,11 @@ export function AboutPage() {
               I'm actively seeking entry-level positions in cybersecurity, GRC, IT support, and related fields. With my practical experience, certifications, and continuous learning mindset, I'm ready to contribute to innovative teams and secure digital environments.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-[#14B8A6] hover:bg-gray-100 border-0">
+              <Button
+                size="lg"
+                className="bg-white text-[#14B8A6] hover:bg-gray-100 border-0"
+                onClick={() => navigateTo('contact')}
+              >
                 <Mail className="w-4 h-4 mr-2" /> Contact Me
               </Button>
               <Button

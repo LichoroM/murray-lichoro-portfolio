@@ -2,16 +2,24 @@ import { Button } from './ui';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { ArrowDown, Linkedin, Mail } from 'lucide-react';
 import { useRouter } from './Router';
+import { domains } from '../data';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
 export function HeroSection() {
   const { navigateTo } = useRouter();
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation(0.2);
 
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20">
       <div className="max-w-7xl mx-auto w-full">
         <div className="lg:grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left: Text content */}
-          <div className="order-2 lg:order-1 space-y-6 lg:space-y-8 text-center lg:text-left">
+          <div 
+            ref={heroRef}
+            className={`order-2 lg:order-1 space-y-6 lg:space-y-8 text-center lg:text-left transition-all duration-1000 ${
+              heroVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
+            }`}
+          >
             <div className="text-sm sm:text-base text-muted-foreground font-medium tracking-wider uppercase">Welcome to my portfolio</div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-foreground leading-tight">
@@ -45,6 +53,15 @@ export function HeroSection() {
               </Button>
             </div>
 
+            {/* Domains of focus */}
+            <div className="flex flex-wrap gap-2 justify-center lg:justify-start pt-2">
+              {domains.map((d) => (
+                <span key={d} className="px-3 py-1 rounded-full bg-accent text-muted-foreground text-xs ring-1 ring-white/10">
+                  {d}
+                </span>
+              ))}
+            </div>
+
             <div className="flex items-center gap-4 justify-center lg:justify-start pt-4">
               <span className="text-sm text-muted-foreground">Connect with me:</span>
               <div className="flex items-center gap-3">
@@ -74,7 +91,7 @@ export function HeroSection() {
           <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
             <div className="relative w-full max-w-lg">
               <div className="absolute inset-0 bg-gradient-to-r from-[#14B8A6] to-[#8B5CF6] rounded-3xl blur-3xl opacity-20 animate-pulse"></div>
-              <div className="relative bg-gradient-to-br from-card to-background p-4 sm:p-6 lg:p-8 rounded-3xl border border-border backdrop-blur-sm">
+              <div className="relative bg-gradient-to-br from-card to-background p-4 sm:p-6 lg:p-8 rounded-3xl ring-1 ring-white/10 backdrop-blur-sm">
                 <ImageWithFallback
                   src={`${import.meta.env.BASE_URL}profile.webp`}
                   fallbackSrc={`${import.meta.env.BASE_URL}profile.jpg`}

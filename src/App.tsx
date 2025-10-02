@@ -50,7 +50,7 @@ const AppContent: React.FC = () => {
       <div className="relative min-h-screen flex flex-col">
         <Navigation />
         
-        <main className="flex-1">
+        <main id="main-content" className="flex-1" tabIndex={-1}>
           <Suspense 
             fallback={
               <div className="min-h-screen flex items-center justify-center">

@@ -4,6 +4,7 @@ export { experiences } from './experience.ts';
 export { education, certifications } from './education.ts';
 export { skillCategories } from './skills.ts';
 export { projects } from './projects.ts';
+export { domains } from './projects.ts';
 
 // Type exports for external use
 export type { PersonalInfo } from './personal';

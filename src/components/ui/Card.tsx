@@ -11,11 +11,19 @@ export const Card: React.FC<CardProps> = ({
   className = '', 
   hover = true 
 }) => {
-  const baseClasses = 'bg-card border border-border rounded-xl p-6 shadow-sm';
+  const baseClasses = [
+    'rounded-xl p-6',
+    // Dynamic card with theme-responsive borders
+    'dynamic-card',
+    // Subtle surface + texture
+    'bg-card/70 backdrop-blur-sm',
+    // Soft shadow that deepens on hover
+    'shadow-[var(--shadow-soft)]',
+  ].join(' ');
   const hoverClasses = hover ? 'card-hover' : '';
   
   return (
-    <div className={`${baseClasses} ${hoverClasses} ${className}`}>
+    <div className={`card-surface ${baseClasses} ${hoverClasses} ${className}`}>
       {children}
     </div>
   );

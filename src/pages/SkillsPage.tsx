@@ -1,12 +1,20 @@
 ﻿import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { SkillProgress } from '../components/ui/SkillProgress';
 import { useRouter } from '../components/Router';
+import { useScrollAnimation } from '../hooks/useScrollAnimation';
 import {
   Shield, Code2, Globe, Wrench, Brain, ArrowRight, Monitor, Settings
 } from 'lucide-react';
 
 export function SkillsPage() {
   const { navigateTo } = useRouter();
+  
+  // Animation refs
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: skillsRef, isVisible: skillsVisible } = useScrollAnimation();
+  const { ref: certsRef, isVisible: certsVisible } = useScrollAnimation();
+  const { ref: journeyRef, isVisible: journeyVisible } = useScrollAnimation();
 
   // Technical Proficiency Categories
   const skillCategories = [
@@ -169,7 +177,12 @@ export function SkillsPage() {
   return (
     <div className="min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={heroRef}
+        className={`py-16 sm:py-20 px-4 sm:px-6 lg:px-8 transition-all duration-700 ${
+          heroVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 bg-accent rounded-full">
             <Wrench className="w-4 h-4 text-[#14B8A6]" />
@@ -189,7 +202,12 @@ export function SkillsPage() {
       </section>
 
       {/* Technical Proficiency Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-accent/30">
+      <section 
+        ref={skillsRef}
+        className={`py-16 px-4 sm:px-6 lg:px-8 bg-accent/30 transition-all duration-700 delay-300 ${
+          skillsVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -217,18 +235,12 @@ export function SkillsPage() {
 
                   <div className="space-y-4">
                     {category.skills.map((skill, skillIndex) => (
-                      <div key={skillIndex}>
-                        <div className="flex justify-between items-center mb-1">
-                          <span className="font-medium text-foreground text-sm">{skill.name}</span>
-                          <span className="text-xs text-muted-foreground font-medium">{skill.level}%</span>
-                        </div>
-                        <div className="w-full bg-accent rounded-full h-2">
-                          <div
-                            className="bg-gradient-to-r from-[#14B8A6] to-[#8B5CF6] h-2 rounded-full transition-all duration-1000 ease-out"
-                            style={{ width: `${skill.level}%` }}
-                          ></div>
-                        </div>
-                      </div>
+                      <SkillProgress
+                        key={skillIndex}
+                        name={skill.name}
+                        level={skill.level}
+                        delay={index * 100 + skillIndex * 50}
+                      />
                     ))}
                   </div>
                 </div>
@@ -239,7 +251,12 @@ export function SkillsPage() {
       </section>
 
       {/* Certifications & Training Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={certsRef}
+        className={`py-16 px-4 sm:px-6 lg:px-8 transition-all duration-700 delay-500 ${
+          certsVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
@@ -327,7 +344,12 @@ export function SkillsPage() {
       </section>
 
       {/* Learning Journey Timeline Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      <section 
+        ref={journeyRef}
+        className={`py-16 px-4 sm:px-6 lg:px-8 transition-all duration-700 delay-700 ${
+          journeyVisible ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-8'
+        }`}
+      >
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
