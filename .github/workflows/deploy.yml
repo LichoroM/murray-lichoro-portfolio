@@ -44,15 +44,13 @@ jobs:
           else
             echo "value=/${REPO_NAME}/" >> $GITHUB_OUTPUT
           fi
-      - name: Export build environment
-        run: |
-          echo "BASE_PATH=${{ steps.base.outputs.value }}" >> $GITHUB_ENV
-          echo "VITE_WEB3FORMS_KEY=${{ secrets.VITE_WEB3FORMS_KEY || '' }}" >> $GITHUB_ENV
-          echo "VITE_CONTACT_SUBJECT_PREFIX=${{ secrets.VITE_CONTACT_SUBJECT_PREFIX || '' }}" >> $GITHUB_ENV
-          echo "VITE_CONTACT_REDIRECT_URL=${{ secrets.VITE_CONTACT_REDIRECT_URL || '' }}" >> $GITHUB_ENV
-          echo "VITE_CONTACT_ENABLE_CAPTCHA=${{ secrets.VITE_CONTACT_ENABLE_CAPTCHA || '' }}" >> $GITHUB_ENV
-
       - name: Build
+        env:
+          BASE_PATH: ${{ steps.base.outputs.value }}
+          VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
+          VITE_CONTACT_SUBJECT_PREFIX: ${{ secrets.VITE_CONTACT_SUBJECT_PREFIX }}
+          VITE_CONTACT_REDIRECT_URL: ${{ secrets.VITE_CONTACT_REDIRECT_URL }}
+          VITE_CONTACT_ENABLE_CAPTCHA: ${{ secrets.VITE_CONTACT_ENABLE_CAPTCHA }}
         run: |
           echo "Using BASE_PATH=$BASE_PATH"
           npm run build
