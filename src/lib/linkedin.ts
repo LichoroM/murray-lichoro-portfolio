@@ -44,7 +44,7 @@ export async function fetchLinkedInProfile(signal?: AbortSignal): Promise<Linked
     if (!res.ok) return null;
     const data = (await res.json()) as LinkedInProfile;
     return data;
-  } catch (_) {
+  } catch {
     return null;
   }
 }

@@ -26,7 +26,7 @@ export function prefetchRoute(route: RouteType) {
 export function prefetchOnIdle(routes: RouteType[]) {
   const cb = () => routes.forEach(prefetchRoute);
   if ('requestIdleCallback' in window) {
-    (window as any).requestIdleCallback(cb, { timeout: 2000 });
+    (window as Window & { requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void }).requestIdleCallback(cb, { timeout: 2000 });
   } else {
     setTimeout(cb, 1200);
   }

@@ -10,14 +10,14 @@ export const Navigation: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const menuItems = [
+  const menuItems = React.useMemo(() => [
     { label: 'About', route: 'about' as const },
     { label: 'Skills', route: 'skills' as const },
     { label: 'Projects', route: 'projects' as const },
     { label: 'Experience', route: 'experience' as const },
     { label: 'Education', route: 'education' as const },
     { label: 'Contact', route: 'contact' as const },
-  ];
+  ], []);
 
   const handleLogoClick = () => {
     navigateTo('home');
@@ -33,7 +33,7 @@ export const Navigation: React.FC = () => {
   React.useEffect(() => {
     const others = menuItems.map(m => m.route as RouteType).filter(r => r !== currentRoute);
     prefetchOnIdle(others);
-  }, [currentRoute]);
+  }, [currentRoute, menuItems]);
 
   return (
     <header className="fixed top-0 w-full glass-effect backdrop-blur-md border-b border-border/50 z-50 transition-all duration-300">

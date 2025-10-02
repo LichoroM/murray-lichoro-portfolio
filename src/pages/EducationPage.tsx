@@ -215,12 +215,25 @@ export function EducationPage() {
       certificate: true,
     }));
 
-    const key = (x: any) => `${x.title}::${x.platform}::${x.completed}`.toLowerCase();
-    const map = new Map<string, any>();
+    type CertificationDisplay = {
+      title: string;
+      platform: string;
+      duration: string;
+      completed: string;
+      credentialId?: string;
+      expires?: string;
+      description: string;
+      skills: string[];
+      url?: string;
+      certificate: boolean;
+    };
+
+    const key = (x: CertificationDisplay) => `${x.title}::${x.platform}::${x.completed}`.toLowerCase();
+    const map = new Map<string, CertificationDisplay>();
     for (const c of base) map.set(key(c), c);
     for (const c of extras) if (!map.has(key(c))) map.set(key(c), c);
     return Array.from(map.values());
-  }, [centralizedCerts, liCerts]);
+  }, [liCerts]);
 
   const academicProjects = [
     {
