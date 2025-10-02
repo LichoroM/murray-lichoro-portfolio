@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Deploy to GitHub Pages
 
 on:
@@ -33,30 +34,28 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Set BASE_PATH
+      - name: Compute BASE_PATH
+        id: base
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
-          if [ -n "${{ vars.BASE_PATH }}" ]; then
-            echo "Using override BASE_PATH from repo variables: ${{ vars.BASE_PATH }}"
-            echo "BASE_PATH=${{ vars.BASE_PATH }}" >> $GITHUB_ENV
+          if [[ "${REPO_NAME}" == *".github.io"* ]]; then
+            echo "value=/" >> $GITHUB_OUTPUT
           else
-            REPO_NAME="${{ github.event.repository.name }}"
-            if [[ "$REPO_NAME" == *".github.io"* ]]; then
-              echo "BASE_PATH=/" >> $GITHUB_ENV
-            else
-              echo "BASE_PATH=/$REPO_NAME/" >> $GITHUB_ENV
-            fi
+            echo "value=/${REPO_NAME}/" >> $GITHUB_OUTPUT
           fi
+      - name: Export build environment
+        run: |
+          echo "BASE_PATH=${{ steps.base.outputs.value }}" >> $GITHUB_ENV
+          echo "VITE_WEB3FORMS_KEY=${{ secrets.VITE_WEB3FORMS_KEY || '' }}" >> $GITHUB_ENV
+          echo "VITE_CONTACT_SUBJECT_PREFIX=${{ secrets.VITE_CONTACT_SUBJECT_PREFIX || '' }}" >> $GITHUB_ENV
+          echo "VITE_CONTACT_REDIRECT_URL=${{ secrets.VITE_CONTACT_REDIRECT_URL || '' }}" >> $GITHUB_ENV
+          echo "VITE_CONTACT_ENABLE_CAPTCHA=${{ secrets.VITE_CONTACT_ENABLE_CAPTCHA || '' }}" >> $GITHUB_ENV
 
       - name: Build
         run: |
           echo "Using BASE_PATH=$BASE_PATH"
           npm run build
-        env:
-          VITE_WEB3FORMS_KEY: ${{ secrets.VITE_WEB3FORMS_KEY }}
-          VITE_CONTACT_SUBJECT_PREFIX: ${{ secrets.VITE_CONTACT_SUBJECT_PREFIX }}
-          VITE_CONTACT_REDIRECT_URL: ${{ secrets.VITE_CONTACT_REDIRECT_URL }}
-          VITE_CONTACT_ENABLE_CAPTCHA: ${{ secrets.VITE_CONTACT_ENABLE_CAPTCHA }}
-          BASE_PATH: ${{ env.BASE_PATH }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
